@@ -2,14 +2,14 @@ name: Build Image and Deploy
 on: [push]
 
 jobs:
-    deploy:
+    build-and-deploy:
     runs-on: ubuntu-latest
     steps:
         # checkout the repo
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
 
-      - name: Login to Azure
+      - name: 'Login to Azure CLI'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
