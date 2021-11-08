@@ -37,7 +37,7 @@ jobs:
             location: 'central india'
             restart-policy: Never
 
-        - name: 'Delete containers'
+        - name: 'Deleting containers'
           uses: azure/CLI@v1
           with:
             inlineScript: |
