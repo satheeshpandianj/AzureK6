@@ -34,4 +34,13 @@ jobs:
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: azurek6registry
-            location: 'west us'
+            location: 'central india'
+
+        - name: 'Clear instances'
+          uses: azure/CLI@v1
+          with:
+            azcliversion: 2.0.72
+            inlineScript: |
+              az logout
+              az cache purge
+              az account clear
