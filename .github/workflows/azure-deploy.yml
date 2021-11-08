@@ -35,14 +35,7 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: azurek6container
             location: 'central india'
-
-        - name: 'Stop containers'
-          uses: azure/CLI@v1
-          with:
-            inlineScript: |
-              az container stop \
-              --name azurek6container \
-              --resource-group ${{ secrets.RESOURCE_GROUP }}
+            restart-policy: Never
 
         - name: 'Delete containers'
           uses: azure/CLI@v1
