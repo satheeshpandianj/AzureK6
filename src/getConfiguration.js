@@ -30,8 +30,8 @@ let errorCount = new Counter('getCarConfigErrorCount');
 // Setting the test configuration along withE threshold value to check the performance
 export let options = {
     tags: {
-        ENVNAME: __ENV.ENVNAME,
-        PROJECTNAME: __ENV.PROJECTNAME,
+        ENV: __ENV.ENV,
+        PROJECTNAME: __ENV.PROJECT,
         APINAME: __ENV.APINAME,
     },
 };
