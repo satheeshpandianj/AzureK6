@@ -12,8 +12,8 @@ param (
     ### Load test resources
     [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Identificativo univoco per ogni run, usato anche come nome di cartella all'interno della Share dello storage account
     [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\script.js", #Il percorso file di test di carico in K6
-    [Parameter(Mandatory = $false)][string]$loadTestVUS = 30, #Il numero di Virtual Users concorrenti per ogni container
-    [Parameter(Mandatory = $false)][string]$loadTestDuration = "20s", #La durata del test in secondi
+    [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, #Il numero di Virtual Users concorrenti per ogni container
+    [Parameter(Mandatory = $false)][string]$loadTestDuration = "1m", #La durata del test in secondi
     ### Containers info
     [Parameter(Mandatory = $false)][string]$K6AgentImage = "loadimpact/k6", # L'immagine K6 da utilizzare, in questo caso la pubblica ufficiale dal DockerHub
     [Parameter(Mandatory = $false)][int]$K6AgentInstances = 1, #Il numero di container da avviare
@@ -114,7 +114,7 @@ az storage account create --name $storageAccountName --resource-group $loadTestR
 az storage share create --name $storageShareName --account-name $storageAccountName --quota 5
 $storageAccountKey = $(az storage account keys list --resource-group $loadTestResourceGroup --account-name $storageAccountName --query "[0].value" --output tsv)
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/script.js"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/getConfiguration.js"
 Write-Host "Uploaded test files to storage account"
 
 ### AGENTS CONTAINER CREATION
@@ -127,7 +127,7 @@ Write-Host "Creating agents container(s)"
         --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
         --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier TEST_VUS=$using:loadTestVUS TEST_DURATION=$using:loadTestDuration `
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
-        --command-line "k6 run /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/script.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
+        --command-line "k6 run /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/getConfiguration.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
 } -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
