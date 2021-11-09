@@ -5,11 +5,12 @@ variables:
   storageAccountName: "azurek6storageaccount"
   logTableName: "loadtestresult"
   logFullTableName: "loadtestresultfull"
-  group: 'AzurePowershellScript'
 
 jobs:
 - job: LoadTest
   displayName: Run Load Tests
+  variables:
+    - group: AzurePowershellScript
   steps:
     - task: Bash@3
       displayName: Run Load Tests
