@@ -14,12 +14,12 @@ jobs:
       displayName: Run Load Tests
       inputs:
         filePath: .azuredevops/scripts/RunK6LoadTest.ps1
-        arguments: '-SubscriptionGuid 'ff6a8b5b-8860-4dbb-a627-1a8eca936e77' -TenantId '3b1ae40f-6070-4926-9430-169cb3871d70' -ClientId '05c4fab8-a999-48b6-890c-e9bf73082754' -ClientSecret 'ufsqXbWlb6VDq7HvM-NQ~nJ-dYGiwZuAW6' -storageAccountName $(storageAccountName) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName $(logTableName) -logFullTableName $(logFullTableName)'
+        arguments: '-SubscriptionGuid "ff6a8b5b-8860-4dbb-a627-1a8eca936e77" -TenantId "3b1ae40f-6070-4926-9430-169cb3871d70" -ClientId "05c4fab8-a999-48b6-890c-e9bf73082754" -ClientSecret "ufsqXbWlb6VDq7HvM-NQ~nJ-dYGiwZuAW6" -storageAccountName $(storageAccountName) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName $(logTableName) -logFullTableName $(logFullTableName)'
         pwsh: true
 
     - task: PowerShell@2
       displayName: Quality Gate
       inputs:
         filePath: .azuredevops/scripts/QualityLoadTest.ps1
-        arguments: '-SubscriptionGuid 'ff6a8b5b-8860-4dbb-a627-1a8eca936e77' -TenantId '3b1ae40f-6070-4926-9430-169cb3871d70' -ClientId '05c4fab8-a999-48b6-890c-e9bf73082754' -ClientSecret 'ufsqXbWlb6VDq7HvM-NQ~nJ-dYGiwZuAW6' -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName $(logTableName) -logFullTableName $(logFullTableName)'
+        arguments: '-SubscriptionGuid "ff6a8b5b-8860-4dbb-a627-1a8eca936e77" -TenantId "3b1ae40f-6070-4926-9430-169cb3871d70" -ClientId "05c4fab8-a999-48b6-890c-e9bf73082754" -ClientSecret "ufsqXbWlb6VDq7HvM-NQ~nJ-dYGiwZuAW6" -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName $(logTableName) -logFullTableName $(logFullTableName)'
         pwsh: true
