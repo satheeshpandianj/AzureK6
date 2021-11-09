@@ -92,7 +92,8 @@ Function Download-JSON-From-StorageAccount($loadTestIdentifier, $fileName, $temp
 #endregion
 
 ### DECLARATIONS
-$AciK6AgentNamePrefix = "aci-loadtest-k6-agent-$loadTestIdentifier"
+# $AciK6AgentNamePrefix = "aci-loadtest-k6-agent-$loadTestIdentifier"
+$AciK6AgentNamePrefix = "azurek6container"
 $AciK6AgentLoadTestHome = "loadtest"
 
 ### ACCOUNT LOGIN
