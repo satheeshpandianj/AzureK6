@@ -1,32 +1,39 @@
 param (
-    ### Azure App Registration con permessi di Contributor sul Resource Group da utilizzare per le risorse Azure (Storage Account, Azure Container Instance) 
+
+    ### Azure App Registration with Contributor permissions on the Resource Group to be used for Azure resources (Storage Account, Azure Container Instance) 
     [Parameter(Mandatory = $true)][string]$SubscriptionGuid,
     [Parameter(Mandatory = $true)][string]$TenantId,
     [Parameter(Mandatory = $true)][string]$ClientId,
     [Parameter(Mandatory = $true)][string]$ClientSecret,
     ### Azure resources
-    [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "AzureK6", #Il nome del resource group dove creare le risorse Azure 
-    [Parameter(Mandatory = $false)][string]$loadTestLocation = "centralindia", #Location per le risorse Azure
-    [Parameter(Mandatory = $true)][string]$storageAccountName, #Il nome dello storage account che conterrà i file delle esecuzioni dei test ed i risultati
-    [Parameter(Mandatory = $false)][string]$storageAccountKey = "7o5zdyw5RlxsVyfSRXNvHoXF/Su27Qd9cNtdkCu4lV8gR+3z/8ZPp/pU0bJ9ugJ0skL5L+rPUQtv2wGwY43uNQ==", #Il nome della file share all'interno dello storage account che effettivamente conterrà i file
-    [Parameter(Mandatory = $false)][string]$storageShareName = "azurek6storageaccount", #Il nome della file share all'interno dello storage account che effettivamente conterrà i file
+    [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "AzureK6", #The name of the resource group where to create the Azure resources 
+    [Parameter(Mandatory = $false)][string]$loadTestLocation = "centralindia", #Location for Azure resources
+    [Parameter(Mandatory = $true)][string]$storageAccountName, #The name of the storage account that will contain the test run files and results
+    [Parameter(Mandatory = $false)][string]$storageAccountKey = "7o5zdyw5RlxsVyfSRXNvHoXF/Su27Qd9cNtdkCu4lV8gR+3z/8ZPp/pU0bJ9ugJ0skL5L+rPUQtv2wGwY43uNQ==", #The name of the file share within the storage account that will actually contain the files
+    [Parameter(Mandatory = $false)][string]$storageShareName = "azurek6storageaccount", #The name of the file share within the storage account that will actually contain the files
+    
+   
     ### Load test resources
-    [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Identificativo univoco per ogni run, usato anche come nome di cartella all'interno della Share dello storage account
-    [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\getConfiguration.js", #Il percorso file di test di carico in K6
-    [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, #Il numero di Virtual Users concorrenti per ogni container
-    [Parameter(Mandatory = $false)][string]$loadTestDuration = "1m", #La durata del test in secondi
+    [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Unique identifier for each run, also used as a folder name within the Share of the storage account
+    [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\getConfiguration.js", #The load test file path in K6
+    [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
+    [Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
+   
+   
     ### Containers info
-    [Parameter(Mandatory = $false)][string]$K6AgentImage = "loadimpact/k6", # L'immagine K6 da utilizzare, in questo caso la pubblica ufficiale dal DockerHub
-    [Parameter(Mandatory = $false)][int]$K6AgentInstances = 1, #Il numero di container da avviare
-    [Parameter(Mandatory = $false)][int]$K6AgentCPU = 4, #Il numero di core CPU per ogni Container
-    [Parameter(Mandatory = $false)][int]$K6AgentMemory = 4, #La quantità di RAM in Gb per ogni Container
+    [Parameter(Mandatory = $false)][string]$K6AgentImage = "loadimpact/k6", # The K6 image to use, in this case the official public one from DockerHub
+    [Parameter(Mandatory = $false)][int]$K6AgentInstances = 1, #The number of containers to start
+    [Parameter(Mandatory = $false)][int]$K6AgentCPU = 4, #The number of CPU cores for each Container
+    [Parameter(Mandatory = $false)][int]$K6AgentMemory = 4, #The amount of RAM in Gb for each Container
+   
+   
     ### Log Analytics Workspace Ingestion
-    [Parameter(Mandatory = $true)][string]$logWorkspaceID, #La Workspace ID della Log Analytics Workspace da utilizzare per l'ingestion dei risultati
-    [Parameter(Mandatory = $true)][string]$logWorkspaceKey, #La Primary Key della Log Analytics Workspace 
-    [Parameter(Mandatory = $false)][string]$logTableName = "loadtestresult", #Il nome della tabella di Custom Logs dove verranno portati i dati per cui è stata fatta ingestion
-    [Parameter(Mandatory = $false)][string]$logFullTableName = "loadtestresultfull", #Il nome della tabella di Custom Logs dove verranno portati i dati FULL per cui è stata fatta ingestion
-    [Parameter(Mandatory = $false)][switch]$uploadFullLogs, #Se selezionato lo switch, vengono salvati su Log Analytics anche i dati FULL
-    [Parameter(Mandatory = $false)][int]$splitblock = 10000 #Il numero di righe da inviare se i full logs sono superiori a 30MB
+    [Parameter(Mandatory = $true)][string]$logWorkspaceID, #The Workspace ID of the Log Analytics Workspace to use for ingestion of the results
+    [Parameter(Mandatory = $true)][string]$logWorkspaceKey, #The Primary Key of the Log Analytics Workspace
+    [Parameter(Mandatory = $false)][string]$logTableName = "loadtestresult", #The name of the Custom Logs table where the data for which ingestion was made will be brought
+    [Parameter(Mandatory = $false)][string]$logFullTableName = "loadtestresultfull", #The name of the Custom Logs table where the FULL data for which ingestion was made will be brought
+    [Parameter(Mandatory = $false)][switch]$uploadFullLogs, #If the switch is selected, the FULL data is also saved on Log Analytics
+    [Parameter(Mandatory = $false)][int]$splitblock = 10000 #The number of lines to send if the full logs are greater than 30MB
 )
 
 ### FUNCTIONS
@@ -126,10 +133,9 @@ Write-Host "Creating agents container(s)"
 1..$K6AgentInstances | ForEach-Object -Parallel {   
     Write-Host "Creating K6 agent $_"
     az container create --resource-group $using:loadTestResourceGroup --name "$using:AciK6AgentNamePrefix-$_" --location $using:loadTestLocation `
-        --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
-        --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier TEST_VUS=$using:loadTestVUS TEST_DURATION=$using:loadTestDuration `
+        --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory 
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
-        --command-line "k6 run -e ENV=Test -e PROJECT=Commerce -e APINAME=GetConfiguration /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/getConfiguration.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json --out influxdb=http://104.40.213.24:8086/Volvo" 
+        --command-line "k6 run -e ENV=Test -e PROJECT=Commerce -e APINAME=GetConfiguration --vus /$using:loadTestVUS --duration /$using:loadTestDuration /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/getConfiguration.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json --out influxdb=http://104.40.213.24:8086/Volvo" 
 } -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
