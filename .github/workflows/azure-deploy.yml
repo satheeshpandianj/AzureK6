@@ -37,14 +37,6 @@ jobs:
             location: 'central india'
             restart-policy: Never
 
-        - name: 'Deleting containers'
-          uses: azure/CLI@v1
-          with:
-            inlineScript: |
-              az container delete \
-              --name azurek6container \
-              --resource-group ${{ secrets.RESOURCE_GROUP }}
-
         - name: 'Clear instances'
           uses: azure/CLI@v1
           with:
