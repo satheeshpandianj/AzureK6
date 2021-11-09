@@ -36,6 +36,8 @@ jobs:
             name: azurek6container
             location: 'central india'
             restart-policy: Never
+            environment-variables: |
+              'STAGES'='20s:1,1m:4:20s:0' 
 
         - name: 'Clear instances'
           uses: azure/CLI@v1
