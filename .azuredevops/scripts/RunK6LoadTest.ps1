@@ -128,7 +128,7 @@ Write-Host "Creating agents container(s)"
         --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
         --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier TEST_VUS=$using:loadTestVUS TEST_DURATION=$using:loadTestDuration `
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
-        --command-line "k6 run /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/getConfiguration.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
+        --command-line "k6 run -e ENV=Test -e PROJECT=Commerce -e APINAME=GetConfiguration /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/getConfiguration.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json --out influxdb=http://104.40.213.24:8086/Volvo" 
 } -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
