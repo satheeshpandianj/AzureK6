@@ -8,6 +8,7 @@ param (
     [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "AzureK6", #Il nome del resource group dove creare le risorse Azure 
     [Parameter(Mandatory = $false)][string]$loadTestLocation = "centralindia", #Location per le risorse Azure
     [Parameter(Mandatory = $true)][string]$storageAccountName, #Il nome dello storage account che conterrà i file delle esecuzioni dei test ed i risultati
+    [Parameter(Mandatory = $false)][string]$storageAccountKey = "7o5zdyw5RlxsVyfSRXNvHoXF/Su27Qd9cNtdkCu4lV8gR+3z/8ZPp/pU0bJ9ugJ0skL5L+rPUQtv2wGwY43uNQ==", #Il nome della file share all'interno dello storage account che effettivamente conterrà i file
     [Parameter(Mandatory = $false)][string]$storageShareName = "azurek6storageaccount", #Il nome della file share all'interno dello storage account che effettivamente conterrà i file
     ### Load test resources
     [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Identificativo univoco per ogni run, usato anche come nome di cartella all'interno della Share dello storage account
