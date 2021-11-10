@@ -1,15 +1,6 @@
 pool:
   vmImage: windows-latest
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**/README.md'
-      - '**/.azuredevops/**'
-  workflow_dispatch:
-
 parameters:
 - name: DEPLOYMENT_SCRIPT
   displayName: SCRIPT_NAME
