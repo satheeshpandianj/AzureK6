@@ -24,7 +24,7 @@ param (
    
     ### Load test resources
     [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Unique identifier for each run, also used as a folder name within the Share of the storage account
-    [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\$using:src_script", #The load test file path in K6
+    [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\$src_script", #The load test file path in K6
     [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
     [Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
    
@@ -132,7 +132,7 @@ az storage account create --name $storageAccountName --resource-group $loadTestR
 az storage share create --name $storageShareName --account-name $storageAccountName --quota 5
 $storageAccountKey = $(az storage account keys list --resource-group $loadTestResourceGroup --account-name $storageAccountName --query "[0].value" --output tsv)
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$using:src_script"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$src_script"
 Write-Host "Uploaded test files to storage account"
 
 ### AGENTS CONTAINER CREATION
