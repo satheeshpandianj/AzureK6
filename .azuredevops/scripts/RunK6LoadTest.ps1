@@ -7,6 +7,7 @@ param (
     [Parameter(Mandatory = $true)][string]$ClientSecret,
 
      ### Environment Variables
+    [Parameter(Mandatory = $true)][string]$src_script,
     [Parameter(Mandatory = $true)][string]$src_env,
     [Parameter(Mandatory = $true)][string]$src_project,
     [Parameter(Mandatory = $true)][string]$src_api_name,
@@ -23,7 +24,7 @@ param (
    
     ### Load test resources
     [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Unique identifier for each run, also used as a folder name within the Share of the storage account
-    [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\getConfiguration.js", #The load test file path in K6
+    [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\$using:src_script", #The load test file path in K6
     [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
     [Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
    
@@ -131,7 +132,7 @@ az storage account create --name $storageAccountName --resource-group $loadTestR
 az storage share create --name $storageShareName --account-name $storageAccountName --quota 5
 $storageAccountKey = $(az storage account keys list --resource-group $loadTestResourceGroup --account-name $storageAccountName --query "[0].value" --output tsv)
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/getConfiguration.js"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$using:src_script"
 Write-Host "Uploaded test files to storage account"
 
 ### AGENTS CONTAINER CREATION
@@ -144,7 +145,7 @@ Write-Host "Creating agents container(s)"
         --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
         --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier `
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
-        --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name --vus $using:src_users --duration $using:src_test_duration /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/getConfiguration.js --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json --out influxdb=http://104.40.213.24:8086/Volvo" 
+        --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name --vus $using:src_users --duration $using:src_test_duration /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/$using:src_script --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json --out influxdb=http://104.40.213.24:8086/Volvo" 
 } -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
