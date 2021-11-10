@@ -1,7 +1,21 @@
 pool:
   vmImage: windows-latest
 
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+      - '**/.azuredevops/**'
+  workflow_dispatch:
+
 parameters:
+- name: DEPLOYMENT_SCRIPT
+  displayName: SCRIPT_NAME
+  type: string
+  default: getConfiguration.js
+
 - name: DEPLOYMENT_ENV
   displayName: DEPLOYMENT_ENV
   type: string
@@ -41,6 +55,8 @@ jobs:
   displayName: Run Load Tests
   variables:
     - group: AzurePowershellScript
+    - name: src_script
+      value: ${{parameters.DEPLOYMENT_SCRIPT}}
     - name: src_env
       value: ${{parameters.DEPLOYMENT_ENV}}
     - name: src_project
@@ -57,7 +73,7 @@ jobs:
       displayName: Run Load Tests
       inputs:
         filePath: .azuredevops/scripts/RunK6LoadTest.ps1
-        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration)'
+        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration)'
         pwsh: true
 
     - task: PowerShell@2
