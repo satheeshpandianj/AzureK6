@@ -166,15 +166,15 @@ do {
 
 Write-Host "Test completed"
 
-Write-Host "Current Path"
-$pwd
+Write-Host $loadTestIdentifier
 
-Write-Host "Directories in Current Path"
-$ls
+Write-Host $loadTestK6Script
+
+$ls $loadTestK6Script
 
 ### IMPORT HTML REPORT ON LOG WORKSPACE
 Write-Host "Started uploading HTML report"
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $pwd\summary.html --path "$loadTestIdentifier/summary.html"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /loadtest/summary.html --path "$loadTestIdentifier/summary.html"
 Write-Host "Uploaded html report to storage account"
 
 #### CLEAN UP THE LOAD TEST RESOURCES
