@@ -22,6 +22,9 @@ import { check } from 'k6';
 import { Rate } from 'k6/metrics';
 import { Counter } from 'k6/metrics';
 import { Trend } from 'k6/metrics';
+import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
+import { SharedArray } from 'k6/data';
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 // Create an object to get the error rate
 let errorRate = new Rate('getCarConfigErrorRate');
@@ -66,6 +69,13 @@ export default function () {
 
     // wait for 2 second
     sleep(2);
+}
+////////////////////////////////////// Summary Report in HTML format  /////////////////////////
+
+export function handleSummary(data) {
+  return {
+    "summary.html": htmlReport(data),
+  };
 }
 /*************************************************************************************
                                 end of script
