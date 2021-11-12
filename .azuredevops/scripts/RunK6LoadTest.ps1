@@ -166,6 +166,12 @@ do {
 
 Write-Host "Test completed"
 
+Write-Host "Current Path"
+$pwd
+
+Write-Host "Directories in Current Path"
+$ls
+
 ### IMPORT HTML REPORT ON LOG WORKSPACE
 Write-Host "Started uploading HTML report"
 az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source .azuredevops/scripts/summary.html --path "$loadTestIdentifier/summary.html"
