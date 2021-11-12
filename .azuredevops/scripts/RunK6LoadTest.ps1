@@ -170,7 +170,6 @@ Write-Host $loadTestIdentifier
 
 Write-Host $loadTestK6Script
 
-$ls $loadTestK6Script
 
 ### IMPORT HTML REPORT ON LOG WORKSPACE
 Write-Host "Started uploading HTML report"
