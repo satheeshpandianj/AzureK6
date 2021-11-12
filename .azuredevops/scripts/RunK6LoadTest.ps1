@@ -174,7 +174,7 @@ Write-Host "Uploaded html report to storage account"
 #### CLEAN UP THE LOAD TEST RESOURCES
 1..$K6AgentInstances | ForEach-Object -Parallel {   
     Write-Host "Removing agent container: $_"
-    # az container delete --resource-group $using:loadTestResourceGroup --name "$using:AciK6AgentNamePrefix-$_" --yes
+    az container delete --resource-group $using:loadTestResourceGroup --name "$using:AciK6AgentNamePrefix-$_" --yes
 } -ThrottleLimit 10
 
 ### IMPORT RESULTS ON LOG WORKSPACE
