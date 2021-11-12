@@ -182,16 +182,7 @@ New-Item -ItemType "directory" -Path $tempDownloadDirectory
     $jsonSummary | Add-Member NoteProperty "containersTestEnd" $injectorsEnd
     $finalJson = ConvertTo-Json @($jsonSummary) -Depth 99 
 
-    ###################### Added for HTML summary report upload ########################
-    $htmlSummary = Download-JSON-From-StorageAccount -loadTestIdentifier $loadTestIdentifier -fileName "summary.html" -tempDownloadDirectory $tempDownloadDirectory -storageAccountName $storageAccountName -storageAccountKey $storageAccountKey -storageShareName $storageShareName
-    ###################### Ended for HTML summary report upload #######################
-
     Post-LogAnalyticsData -customerId $logWorkspaceID -sharedKey $logWorkspaceKey -body ([System.Text.Encoding]::UTF8.GetBytes($finalJson)) -logType $logTableName 
-
-    ###################### Added for HTML summary report upload ########################
-    Post-LogAnalyticsData -customerId $logWorkspaceID -sharedKey $logWorkspaceKey -body ([System.Text.Encoding]::UTF8.GetBytes($htmlSummary)) -logType $logTableName 
-
-    ###################### Ended for HTML summary report upload #######################
 
     if ($uploadFullLogs) {
         $jsonFull = Download-JSON-From-StorageAccount -loadTestIdentifier $loadTestIdentifier -fileName "${loadTestIdentifier}_${_}.json" -tempDownloadDirectory $tempDownloadDirectory -storageAccountName $storageAccountName -storageAccountKey $storageAccountKey -storageShareName $storageShareName    
