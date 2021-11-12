@@ -173,11 +173,11 @@ Write-Host "Directories in Current Path"
 $ls
 
 Write-Host "Directories in D drive"
-$ls /D/a/1/s
+$ls D:\a\1\s
 
 ### IMPORT HTML REPORT ON LOG WORKSPACE
 Write-Host "Started uploading HTML report"
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /D/a/1/s/summary.html --path "$loadTestIdentifier/summary.html"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source D:\a\1\s\summary.html --path "$loadTestIdentifier/summary.html"
 Write-Host "Uploaded html report to storage account"
 
 #### CLEAN UP THE LOAD TEST RESOURCES
