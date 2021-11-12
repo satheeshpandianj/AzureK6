@@ -166,14 +166,11 @@ do {
 
 Write-Host "Test completed"
 
-Write-Host $loadTestIdentifier
-
-Write-Host $loadTestK6Script
-
+Write-Host $AciK6AgentLoadTestHome
 
 ### IMPORT HTML REPORT ON LOG WORKSPACE
 Write-Host "Started uploading HTML report"
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /loadtest/summary.html --path "$loadTestIdentifier/summary.html"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /$AciK6AgentLoadTestHome/summary.html --path "$loadTestIdentifier/summary.html"
 Write-Host "Uploaded html report to storage account"
 
 #### CLEAN UP THE LOAD TEST RESOURCES
