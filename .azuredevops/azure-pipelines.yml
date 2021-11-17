@@ -64,7 +64,7 @@ jobs:
       displayName: Run Load Tests
       inputs:
         filePath: .azuredevops/scripts/RunK6LoadTest.ps1
-        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration)'
+        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -storageAccountKey $(storageAccountKey) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration)'
         pwsh: true
 
     - task: PowerShell@2
