@@ -18,7 +18,7 @@ param (
     [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "AzureK6", #The name of the resource group where to create the Azure resources 
     [Parameter(Mandatory = $false)][string]$loadTestLocation = "centralindia", #Location for Azure resources
     [Parameter(Mandatory = $true)][string]$storageAccountName, #The name of the storage account that will contain the test run files and results
-    [Parameter(Mandatory = $false)][string]$storageAccountKey = "l0/LDlUOC8WM+bjkAxMfWMYL5fGhkLWnf4uWdYwspnlLNcvshoRz/XM4qWEP/LIJ96cbGTwCxVMYw1kp/nehEA==", #The name of the file share within the storage account that will actually contain the files
+    [Parameter(Mandatory = $false)][string]$storageAccountKey, #The name of the file share within the storage account that will actually contain the files
     [Parameter(Mandatory = $false)][string]$storageShareName = "azurek6storageaccount", #The name of the file share within the storage account that will actually contain the files
     
    
