@@ -42,7 +42,7 @@ param (
     [Parameter(Mandatory = $false)][string]$logTableName = "loadtestresult", #The name of the Custom Logs table where the data for which ingestion was made will be brought
     [Parameter(Mandatory = $false)][string]$logFullTableName = "loadtestresultfull", #The name of the Custom Logs table where the FULL data for which ingestion was made will be brought
     [Parameter(Mandatory = $false)][switch]$uploadFullLogs, #If the switch is selected, the FULL data is also saved on Log Analytics
-    [Parameter(Mandatory = $false)][int]$splitblock = 10000 #The number of lines to send if the full logs are greater than 30MB
+    [Parameter(Mandatory = $false)][int]$splitblock = 10000 #The number of lines to send if the full logs are greater than 31MB
 )
 
 ### FUNCTIONS
