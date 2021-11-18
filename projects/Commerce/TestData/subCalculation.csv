@@ -1,0 +1,5 @@
+Market,Brand,DealerId,ModelYear,VariantCode,CustomerType,Version
+NL,vcc,6NL10500,2021,225BM130D119,b2c,v1
+US,vcc,AA7SQ,2019,224A2430C131,b2c,v1
+DE,vcc,12345,2022,246K5170D119,b2b,v1
+NL,vcc,6NL10500,2021,225BM130D119,b2b,v1

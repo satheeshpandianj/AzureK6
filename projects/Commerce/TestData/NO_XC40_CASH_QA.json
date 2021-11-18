@@ -1,0 +1,54 @@
+{
+  "productLines": [
+    {
+      "lineNumber": 1,
+      "productId": "PCAT-FDSGYpLSGGwuzeeROziDWzVWDH",
+      "quantity": 1,
+      "offerId": "PCAT-IGEAwQbgVwheBhNrNOEKMYEuDi"
+    },
+    {
+      "lineNumber": 2,
+      "productId": "PCAT-CsemiAgmCNWKzLfevExqTtqggP",
+      "quantity": 1,
+      "links": [
+        {
+          "relation": "reliesOn",
+          "lineNumber": 1
+        }
+      ]
+    },
+    {
+      "lineNumber": 3,
+      "productId": "PCAT-BuaTUDJnFYUuliymizhECXFyNn",
+      "quantity": 1,
+      "links": [
+        {
+          "relation": "reliesOn",
+          "lineNumber": 1
+        }
+      ]
+    },
+    {
+      "lineNumber": 4,
+      "productId": "PCAT-DgRDuzSEMuSuFgsANwGUhRAKIO",
+      "quantity": 1,
+      "links": [
+        {
+          "relation": "reliesOn",
+          "lineNumber": 1
+        }
+      ]
+    },
+    {
+      "lineNumber": 5,
+      "productId": "PCAT-oPAhCzyxNOSKtHWyBFnqTEDRQf",
+      "quantity": 1,
+      "links": [
+        {
+          "relation": "reliesOn",
+          "lineNumber": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+Market,Brand,SalesModel,DealerId,CustomerType
+GB,vcc,sub,AD4G0,b2c
+NL,vcc,sub,missing,b2c
+US,vcc,sub,AEC7H,b2c
+GB,vcc,Sub_fixed,SUB,b2c

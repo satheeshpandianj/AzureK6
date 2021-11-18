@@ -1,0 +1,4 @@
+Market,Brand,DealerId,ModelYear,VariantCode,CustomerType,SalesModel,Version,ContractLength,Mileage
+NO,VCC,string,2022,536EDR80E110,b2c,cash,v2,24,10000
+SE,vcc,ADY9K,2022,539EDR80E110,b2c,sub_fixed,v2,36,15000
+FI,vcc,missing,2022,536EDR80E110,b2c,lease,v2,36,10000

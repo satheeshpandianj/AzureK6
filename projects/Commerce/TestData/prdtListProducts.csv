@@ -1,0 +1,4 @@
+market,brand,skiprelation,tags,type,timestamp
+DE,vcc,true,SALESMODEL_SUB,CAR_PNO3_536,commercialItem,now
+DE,vcc,true,SALESMODEL_SUB,CAR_PNO3_536,commercialItem,past
+DE,vcc,true,SALESMODEL_SUB,CAR_PNO3_536,commercialItem,future
