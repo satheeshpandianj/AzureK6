@@ -28,8 +28,8 @@ param (
     [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
     [Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
     ############## Trial
-    [Parameter(Mandatory = $false)][string]$loadTestUtilPath = "$($env:Build_Repository_LocalPath)\Utils", #The Util path in framework   
-    [Parameter(Mandatory = $false)][string]$loadTestProjectPath = "$($env:Build_Repository_LocalPath)\projects", #The projects path in framework 
+    [Parameter(Mandatory = $false)][string]$loadTestSourcePath = "$($env:Build_Repository_LocalPath)", #The Util path in framework   
+    # [Parameter(Mandatory = $false)][string]$loadTestProjectPath = "$($env:Build_Repository_LocalPath)\projects", #The projects path in framework 
    
     ### Containers info
     [Parameter(Mandatory = $false)][string]$K6AgentImage = "loadimpact/k6", # The K6 image to use, in this case the official public one from DockerHub
@@ -136,9 +136,8 @@ $storageAccountKey = $(az storage account keys list --resource-group $loadTestRe
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
 
 #### Trial starts
-az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --source $loadTestUtilPath --destination $storageShareName
+az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestSourcePath --destination $storageShareName
 
-az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --source $loadTestProjectPath --destination $storageShareName
 ### Trail ends
 
 az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$src_script"
