@@ -27,7 +27,9 @@ param (
     [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\$src_script", #The load test file path in K6
     [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
     [Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
-   
+    ############## Trial
+    [Parameter(Mandatory = $false)][string]$loadTestUtilPath = "$($env:Build_Repository_LocalPath)\Utils", #The Util path in framework   
+    [Parameter(Mandatory = $false)][string]$loadTestProjectPath = "$($env:Build_Repository_LocalPath)\projects", #The projects path in framework 
    
     ### Containers info
     [Parameter(Mandatory = $false)][string]$K6AgentImage = "loadimpact/k6", # The K6 image to use, in this case the official public one from DockerHub
@@ -132,6 +134,13 @@ az storage account create --name $storageAccountName --resource-group $loadTestR
 az storage share create --name $storageShareName --account-name $storageAccountName --quota 5
 $storageAccountKey = $(az storage account keys list --resource-group $loadTestResourceGroup --account-name $storageAccountName --query "[0].value" --output tsv)
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
+
+#### Trial starts
+az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestUtilPath --destination-path "$loadTestIdentifier/$loadTestUtilPath"
+
+az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestProjectPath --destination-path "$loadTestIdentifier/$loadTestProjectPath"
+### Trail ends
+
 az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$src_script"
 Write-Host "Uploaded test files to storage account"
 
