@@ -136,7 +136,7 @@ $storageAccountKey = $(az storage account keys list --resource-group $loadTestRe
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
 
 #### Trial starts
-az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestSourcePath --destination $storageShareName
+az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --source $loadTestSourcePath --destination $storageShareName
 
 ### Trail ends
 
