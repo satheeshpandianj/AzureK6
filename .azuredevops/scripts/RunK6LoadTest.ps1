@@ -136,12 +136,13 @@ $storageAccountKey = $(az storage account keys list --resource-group $loadTestRe
 az storage directory create --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --name $loadTestIdentifier
 
 #### Trial starts
+Write-Host "Started uploading all the source files to storage account"
 az storage file upload-batch --account-name $storageAccountName --account-key $storageAccountKey --source $loadTestSourcePath --destination $storageShareName
-
+Write-Host "Completed uploading all the source files to storage account"
 ### Trail ends
 
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$src_script"
-Write-Host "Uploaded test files to storage account"
+# az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source $loadTestK6Script --path "$loadTestIdentifier/$src_script"
+# Write-Host "Uploaded test files to storage account"
 
 ### AGENTS CONTAINER CREATION
 $injectorsStart = Get-Date
