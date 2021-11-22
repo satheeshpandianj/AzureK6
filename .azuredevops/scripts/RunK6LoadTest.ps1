@@ -177,7 +177,7 @@ Write-Host "Test completed"
 
 ############# HTML Report upload starts
 Write-Host "Moving HTML report to storage account"
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /$AciK6AgentLoadTestHome/summary.html --path "/$AciK6AgentLoadTestHome/$loadTestIdentifier/summary.html"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /loadtest/summary.html --path "/loadtest/$loadTestIdentifier/summary.html"
 Write-Host "Uploaded HTML report to storage account"
 ############# HTML Report upload ends
 
