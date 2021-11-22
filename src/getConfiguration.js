@@ -74,7 +74,7 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    "/loadtest/$loadTestIdentifier/summary.html": htmlReport(data),
+    "/loadtest/summary.html": htmlReport(data,"K6 Load Test Summary Report"),
   };
 }
 /*************************************************************************************
