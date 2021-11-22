@@ -177,7 +177,8 @@ Write-Host "Test completed"
 
 ############# HTML Report upload starts
 Write-Host "Moving HTML report to storage account"
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source "/summary.html" --path "/$loadTestIdentifier/summary.html"
+#az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source "/summary.html" --path "/$loadTestIdentifier/summary.html"
+azcopy copy 'https://azurek6storageaccount.file.core.windows.net/azurek6storageaccount/summary.html?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2021-11-22T16:03:28Z&st=2021-11-22T08:03:28Z&spr=https&sig=3zFyHFNqJdABTdZZX7LeeqzGwDso8Red96xVXZov7qU%3D' 'https://azurek6storageaccount.file.core.windows.net/azurek6storageaccount/'+$loadTestIdentifier+'/summary.html?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2021-11-22T16:03:28Z&st=2021-11-22T08:03:28Z&spr=https&sig=3zFyHFNqJdABTdZZX7LeeqzGwDso8Red96xVXZov7qU%3D' --preserve-smb-permissions=true --preserve-smb-info=true
 Write-Host "Uploaded HTML report to storage account"
 ############# HTML Report upload ends
 
