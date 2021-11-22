@@ -175,6 +175,12 @@ do {
 
 Write-Host "Test completed"
 
+############# HTML Report upload starts
+Write-Host "Moving HTML report to storage account"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /$using:AciK6AgentLoadTestHome/summary.html --path "$loadTestIdentifier/summary.html"
+Write-Host "Uploaded HTML report to storage account"
+############# HTML Report upload ends
+
 #### CLEAN UP THE LOAD TEST RESOURCES
 1..$K6AgentInstances | ForEach-Object -Parallel {   
     Write-Host "Removing agent container: $_"
