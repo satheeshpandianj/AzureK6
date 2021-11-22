@@ -179,7 +179,7 @@ Write-Host "Test completed"
 Write-Host "Moving HTML report to storage account"
 #az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source "/summary.html" --path "/$loadTestIdentifier/summary.html"
 azcopy login --tenant-id $TenantId
-azcopy cp 'https://azurek6storageaccount.file.core.windows.net/azurek6storageaccount/summary.html?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2021-11-30T18:02:19Z&st=2021-11-22T10:02:19Z&spr=https&sig=74G9UwxbIRV9moiZtuqxW02WPZsz%2BypsueusLze4JOA%3D' "https://azurek6storageaccount.file.core.windows.net/azurek6storageaccount/'+$loadTestIdentifier+'/summary.html?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2021-11-30T18:02:19Z&st=2021-11-22T10:02:19Z&spr=https&sig=74G9UwxbIRV9moiZtuqxW02WPZsz%2BypsueusLze4JOA%3D" 
+azcopy cp 'https://azurek6storageaccount.file.core.windows.net/azurek6storageaccount/summary.html?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2021-11-30T18:02:19Z&st=2021-11-22T10:02:19Z&spr=https&sig=74G9UwxbIRV9moiZtuqxW02WPZsz%2BypsueusLze4JOA%3D' "https://azurek6storageaccount.file.core.windows.net/azurek6storageaccount/reports/$loadTestIdentifier_summary.html?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2021-11-30T18:02:19Z&st=2021-11-22T10:02:19Z&spr=https&sig=74G9UwxbIRV9moiZtuqxW02WPZsz%2BypsueusLze4JOA%3D" 
 Write-Host "Uploaded HTML report to storage account"
 ############# HTML Report upload ends
 
