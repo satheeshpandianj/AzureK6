@@ -74,7 +74,7 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    "/loadtest/summary.html": htmlReport(data),
+    "/loadtest/$loadTestIdentifier/summary.html": htmlReport(data),
   };
 }
 /*************************************************************************************
