@@ -154,7 +154,7 @@ Write-Host "Creating agents container(s)"
         --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
         --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier `
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
-        --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name --vus $using:src_users --duration $using:src_test_duration /$using:AciK6AgentLoadTestHome/src/$using:src_script --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json --out influxdb=http://104.40.213.24:8086/Volvo" 
+        --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name --vus $using:src_users --duration $using:src_test_duration /$using:AciK6AgentLoadTestHome/src/$using:src_script --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
 } -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
@@ -177,7 +177,7 @@ Write-Host "Test completed"
 
 ############# HTML Report upload starts
 Write-Host "Moving HTML report to storage account"
-az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source /loadtest/summary.html --path "/loadtest/$loadTestIdentifier/summary.html"
+az storage file upload --account-name $storageAccountName --account-key $storageAccountKey --share-name $storageShareName --source "/loadtest/summary.html" --path "/loadtest/$loadTestIdentifier/summary.html"
 Write-Host "Uploaded HTML report to storage account"
 ############# HTML Report upload ends
 
