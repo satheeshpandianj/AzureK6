@@ -38,7 +38,7 @@ parameters:
   default: 1m
 
 variables:
-  storageAccountName: "azurek6storageaccount"
+  storageAccountName: "perfresultaccount"
   logTableName: "loadtestresult"
   logFullTableName: "loadtestresultfull"
 
@@ -46,7 +46,7 @@ jobs:
 - job: LoadTest
   displayName: Run Load Tests
   variables:
-    - group: AzurePowershellScript
+    - group: volvo
     - name: src_script
       value: ${{parameters.DEPLOYMENT_SCRIPT}}
     - name: src_env
