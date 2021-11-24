@@ -27,11 +27,15 @@ parameters:
   type: string
   default: GetConfiguration
 
-- name: DEPLOYMENT_STAGES
-  displayName: STAGES
+- name: DEPLOYMENT_USERS
+  displayName: USERS
   type: string
-  default: "1s:1,1m:1,1s:0"
+  default: 1
 
+- name: DEPLOYMENT_TEST_DURATION
+  displayName: TEST_DURATION
+  type: string
+  default: 1m
 
 variables:
   storageAccountName: "azurek6storageaccount"
@@ -51,16 +55,17 @@ jobs:
       value: ${{parameters.DEPLOYMENT_PROJECT}}
     - name: src_api_name
       value: ${{parameters.DEPLOYMENT_API_NAME}} 
-    - name: src_stages
-      value: ${{parameters.DEPLOYMENT_STAGES}}       
-    
+    - name: src_users
+      value: ${{parameters.DEPLOYMENT_USERS}}       
+    - name: src_test_duration
+      value: ${{parameters.DEPLOYMENT_TEST_DURATION}}       
 
   steps:
     - task: PowerShell@2
       displayName: Run Load Tests
       inputs:
         filePath: .azuredevops/scripts/RunK6LoadTest.ps1
-        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -storageAccountKey $(storageAccountKey) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_stages $(src_stages)'
+        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -storageAccountKey $(storageAccountKey) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration)'
         pwsh: true
 
     - task: PowerShell@2
