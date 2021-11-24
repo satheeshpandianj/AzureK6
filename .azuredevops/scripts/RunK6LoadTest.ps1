@@ -15,18 +15,18 @@ param (
     [Parameter(Mandatory = $true)][string]$src_test_duration,
 
     ### Azure resources
-    [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "monitoring_tools", #The name of the resource group where to create the Azure resources 
-    [Parameter(Mandatory = $false)][string]$loadTestLocation = "norwayeast", #Location for Azure resources
+    [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "AzureK6", #The name of the resource group where to create the Azure resources 
+    [Parameter(Mandatory = $false)][string]$loadTestLocation = "centralindia", #Location for Azure resources
     [Parameter(Mandatory = $true)][string]$storageAccountName, #The name of the storage account that will contain the test run files and results
     [Parameter(Mandatory = $false)][string]$storageAccountKey, #The name of the file share within the storage account that will actually contain the files
-    [Parameter(Mandatory = $false)][string]$storageShareName = "perfresultaccount", #The name of the file share within the storage account that will actually contain the files
+    [Parameter(Mandatory = $false)][string]$storageShareName = "azurek6storageaccount", #The name of the file share within the storage account that will actually contain the files
     
    
     ### Load test resources
     [Parameter(Mandatory = $false)][string]$loadTestIdentifier = $(Get-Date -format "yyyyMMddhhmmss"), #Unique identifier for each run, also used as a folder name within the Share of the storage account
     [Parameter(Mandatory = $false)][string]$loadTestK6Script = "$($env:Build_Repository_LocalPath)\src\$src_script", #The load test file path in K6
-    #[Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
-    #[Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
+    [Parameter(Mandatory = $false)][string]$loadTestVUS = 3, # The number of concurrent Virtual Users for each container
+    [Parameter(Mandatory = $false)][string]$loadTestDuration = "60s", #The duration of the test in seconds
     ############## Trial starts
     [Parameter(Mandatory = $false)][string]$loadTestSourcePath = "$($env:Build_Repository_LocalPath)", #The Util path in framework   
    ############## Trial ends
