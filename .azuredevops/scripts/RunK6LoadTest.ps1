@@ -154,7 +154,7 @@ Write-Host "Creating agents container(s)"
         --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
         --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier `
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
-        --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name --stage "10s:$using:src_users","$using:src_test_duration:$using:src_users","10s:0" /$using:AciK6AgentLoadTestHome/src/$using:src_script --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
+        --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name --stage "10s:/$using:src_users","/$using:src_test_duration:/$using:src_users","10s:0" /$using:AciK6AgentLoadTestHome/src/$using:src_script --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
 } -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
