@@ -30,7 +30,7 @@ parameters:
 - name: DEPLOYMENT_STAGES
   displayName: STAGES
   type: string
-  default: 1s:1,1m:1,1s:0
+  default: "1s:1,1m:1,1s:0"
 
 
 variables:
