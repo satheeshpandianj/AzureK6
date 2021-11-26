@@ -38,15 +38,10 @@ parameters:
   default: 1m
 
 - name: DEPLOYMENT_DATASOURCE
-  displayName: DEPLOYMENT_DATASOURCE
+  displayName: DATASOURCE
   type: string
   default: content-services-sitecore9-custom
-  values:
-    - content-services-sitecore9-custom
-    - dotcom-sitecore-test
-    - dotcom-sitecore-qa
-    - dotcom-sitecore-prod
-    
+
 variables:
   storageAccountName: "azurek6storageaccount"
   logTableName: "loadtestresult"
@@ -68,16 +63,16 @@ jobs:
     - name: src_users
       value: ${{parameters.DEPLOYMENT_USERS}}       
     - name: src_test_duration
-      value: ${{parameters.DEPLOYMENT_TEST_DURATION}}       
-    - name: src_datasource
-      value: ${{parameters.DEPLOYMENT_DATASOURCE}}   
-      
+      value: ${{parameters.DEPLOYMENT_TEST_DURATION}}     
+    - name: src_test_datasource
+      value: ${{parameters.DEPLOYMENT_DATASOURCE}}    
+
   steps:
     - task: PowerShell@2
       displayName: Run Load Tests
       inputs:
         filePath: .azuredevops/scripts/RunK6LoadTest.ps1
-        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -storageAccountKey $(storageAccountKey) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration) -src_datasource $(src_datasource)'
+        arguments: '-SubscriptionGuid $(SubscriptionGuid) -TenantId $(TenantId) -ClientId $(ClientId) -ClientSecret $(ClientSecret) -storageAccountName "azurek6storageaccount" -storageAccountKey $(storageAccountKey) -logWorkspaceId $(logWorkspaceId) -logWorkspaceKey $(logWorkspaceKey) -logTableName "loadtestresult" -logFullTableName "loadtestresultfull" -src_script $(src_script) -src_env $(src_env) -src_project $(src_project) -src_api_name $(src_api_name) -src_users $(src_users) -src_test_duration $(src_test_duration) -src_test_datasource $(src_test_datasource)'
         pwsh: true
 
     - task: PowerShell@2
