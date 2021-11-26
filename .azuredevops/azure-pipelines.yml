@@ -42,6 +42,7 @@ parameters:
   type: string
   default: content-services-sitecore9-custom
   values:
+    - content-services-sitecore9-custom
     - dotcom-sitecore-qa
     - dotcom-sitecore-test
     - dotcom-sitecore-prod
