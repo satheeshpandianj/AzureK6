@@ -1,0 +1,9 @@
+ContentType,RequiredStatus,LocalizedStatus
+Text,true,true
+ShortText,false,false
+Integer,true,true
+Decimal,false,false
+DateTime,true,true
+Boolean,false,false
+Link,true,true
+RichText,true,true
