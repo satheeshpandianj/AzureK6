@@ -41,6 +41,10 @@ parameters:
   displayName: DATASOURCE
   type: string
   default: content-services-sitecore9-custom
+    values:
+    - dotcom-sitecore-qa
+    - dotcom-sitecore-test
+    - dotcom-sitecore-prod
 
 variables:
   storageAccountName: "azurek6storageaccount"
