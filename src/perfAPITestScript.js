@@ -109,7 +109,7 @@ export function teardown() {
 export function handleSummary(data) {
     sendSlackMessage(data);
     return {
-        // "/loadtest/summary.html": htmlReport(data),
+         "/loadtest/summary.html": htmlReport(data),
         'stdout': textSummary(data, { indent: ' ', enableColors: true })
     };
 }
