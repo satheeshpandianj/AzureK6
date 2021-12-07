@@ -14,7 +14,7 @@ param (
     [Parameter(Mandatory = $true)][string]$src_users,
     [Parameter(Mandatory = $true)][string]$src_test_duration,
     [Parameter(Mandatory = $true)][string]$src_test_datasource,
-    [Parameter(Mandatory = $true)][string]$src_influx = "http://51.120.5.231:8086/Volvo",
+    [Parameter(Mandatory = $false)][string]$src_influx = "http://51.120.5.231:8086/Volvo",
     
     ### Azure resources
     [Parameter(Mandatory = $false)][string]$loadTestResourceGroup = "AzureK6", #The name of the resource group where to create the Azure resources 
