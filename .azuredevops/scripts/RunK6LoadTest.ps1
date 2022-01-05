@@ -150,25 +150,25 @@ Write-Host "Completed uploading all the source files to storage account"
 $injectorsStart = Get-Date
 
 Write-Host "Creating agents container(s)"
-#1..$K6AgentInstances | ForEach-Object -Parallel {   
+1..$K6AgentInstances | ForEach-Object -Parallel {   
     Write-Host "Creating K6 agent $_"
     az container create --resource-group $using:loadTestResourceGroup --name "$using:AciK6AgentNamePrefix-$_" --location $using:loadTestLocation `
         --image $using:K6AgentImage --restart-policy Never --cpu $using:K6AgentCPU --memory $using:K6AgentMemory `
         --environment-variables AGENT_NUM=$_ LOAD_TEST_ID=$using:loadTestIdentifier `
         --azure-file-volume-account-name $using:storageAccountName --azure-file-volume-account-key $using:storageAccountKey --azure-file-volume-share-name $using:storageShareName --azure-file-volume-mount-path "/$using:AciK6AgentLoadTestHome/" `
         --command-line "k6 run -e ENV=$using:src_env -e PROJECT=$using:src_project -e APINAME=$using:src_api_name -e DATASOURCE=$using:src_test_datasource --out influxdb=$using:src_influx --vus $using:src_users --duration $using:src_test_duration /$using:AciK6AgentLoadTestHome/src/$using:src_script --summary-export /$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_${_}_summary.json --out json=/$using:AciK6AgentLoadTestHome/$using:loadTestIdentifier/${using:loadTestIdentifier}_$_.json" 
-#} -ThrottleLimit 10
+} -ThrottleLimit 10
 
 $injectorsEnd = Get-Date
 
 ### WAIT FOR EXECUTION TO FINISH
 do {
     $countRunning = 0;
-    #1..$K6AgentInstances | ForEach-Object {   
+    1..$K6AgentInstances | ForEach-Object {   
         if ($(az container show -g $loadTestResourceGroup -n "$AciK6AgentNamePrefix-$_" --query "containers[0].instanceView.currentState.state" -o tsv) -eq "Running") {
             $countRunning += 1
         }
-    #}
+    }
     if ($countRunning -gt 0) {
         Write-Host "Load test still running with $countRunning containers"
     }
@@ -187,15 +187,15 @@ Write-Host "Uploaded HTML report to storage account"
 ############# HTML Report upload ends
 
 #### CLEAN UP THE LOAD TEST RESOURCES
-#1..$K6AgentInstances | ForEach-Object -Parallel {   
+1..$K6AgentInstances | ForEach-Object -Parallel {   
     Write-Host "Removing agent container: $_"
     az container delete --resource-group $using:loadTestResourceGroup --name "$using:AciK6AgentNamePrefix-$_" --yes
-#} -ThrottleLimit 10
+} -ThrottleLimit 10
 
 ### IMPORT RESULTS ON LOG WORKSPACE
 $tempDownloadDirectory = "$PSScriptRoot\$loadTestIdentifier"
 New-Item -ItemType "directory" -Path $tempDownloadDirectory
-#1..$K6AgentInstances | ForEach-Object {     
+1..$K6AgentInstances | ForEach-Object {     
     $jsonSummary = Download-JSON-From-StorageAccount -loadTestIdentifier $loadTestIdentifier -fileName "${loadTestIdentifier}_${_}_summary.json" -tempDownloadDirectory $tempDownloadDirectory -storageAccountName $storageAccountName -storageAccountKey $storageAccountKey -storageShareName $storageShareName
     $jsonSummary | Add-Member NoteProperty "containerCurrentNumber" ${_}
     $jsonSummary | Add-Member NoteProperty "containersTestStart" $injectorsStart
@@ -226,6 +226,6 @@ New-Item -ItemType "directory" -Path $tempDownloadDirectory
         }
 
     }
-#}
+}
 
 Remove-Item $tempDownloadDirectory -Force -Recurse
